@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Code kopiëren</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
+    .copy-box { background: white; padding: 1em; border: 1px solid #ccc; max-width: 400px; margin: auto; text-align: center; }
+    .copy-button { padding: 0.5em 1em; background: #990000; color: white; border: none; cursor: pointer; border-radius: 4px; }
+    .copy-result { margin-top: 1em; color: green; }
+  </style>
+</head>
+<body>
+
+<div class="copy-box">
+  <p><strong>Kortingscode:</strong> <span id="discountCode">MEGADEALS</span></p>
+  <button class="copy-button" onclick="copyCode()">Kopieer code</button>
+  <div id="copyResult" class="copy-result"></div>
+</div>
+
+<script>
+  function copyCode() {
+    const text = document.getElementById("discountCode").textContent;
+    const result = document.getElementById("copyResult");
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        result.textContent = "Gekopieerd naar klembord!";
+      }).catch(err => {
+        fallbackCopy(text, result);
+      });
+    } else {
+      fallbackCopy(text, result);
+    }
+  }
+
+  function fallbackCopy(text, result) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";  // voorkomt scroll-jump op iOS
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+      const successful = document.execCommand("copy");
+      result.textContent = successful ? "Gekopieerd (fallback methode)!" : "Kopiëren mislukt.";
+    } catch (err) {
+      result.textContent = "Kopiëren mislukt.";
+    }
+
+    document.body.removeChild(textarea);
+  }
+</script>
+
+</body>
+</html>
