@@ -26,6 +26,9 @@
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text).then(() => {
         result.textContent = "Gekopieerd naar klembord!";
+        setTimeout(() => {
+          window.location.href = "https://borrelchallenge.nl";
+        }, 2000); // 2 seconden wachten
       }).catch(err => {
         fallbackCopy(text, result);
       });
@@ -45,6 +48,11 @@
     try {
       const successful = document.execCommand("copy");
       result.textContent = successful ? "Gekopieerd (fallback methode)!" : "Kopiëren mislukt.";
+      if (successful) {
+        setTimeout(() => {
+          window.location.href = "https://borrelchallenge.nl";
+        }, 2000);
+      }
     } catch (err) {
       result.textContent = "Kopiëren mislukt.";
     }
@@ -55,3 +63,4 @@
 
 </body>
 </html>
+
